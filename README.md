@@ -1,8 +1,8 @@
 # Discord Valorant Tracker
 Sends a message to a channel in a server whenever a tracked player finishes a Valorant competitive match
+![Alt text](images/image-1.png)
 
 ## Setup
-
 ### Discord 
 Create a discord bot with a send messages permission and bot and application.commands scopes 
 
@@ -53,6 +53,4 @@ The bot has 2 commands:
 - `/list` - List the currently tracked players in the configured channel
 - `/remove <name> <#tag>` - Remove a player from the tracking list (will remove notifications for every channel)
 
-## Sample notification
 
-![Alt text](images/image-1.png)
