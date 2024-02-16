@@ -1,0 +1,7 @@
+node_modules/
+tracked_players*.json
+config.json
+background.sh
+pid
+.env
+build/
