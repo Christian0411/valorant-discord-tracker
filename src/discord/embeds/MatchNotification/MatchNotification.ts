@@ -1,10 +1,13 @@
 import {EmbedBuilder} from 'discord.js';
 import {Match} from '../../../valorant/types/match';
+import TrackedPlayer from '../../../db/models/TrackedPlayer';
 
 export const MatchNotification = ({
+  player,
   match,
   attachment,
 }: {
+  player: TrackedPlayer,
   match: Match;
   attachment: string;
 }) =>
@@ -68,4 +71,9 @@ export const MatchNotification = ({
         value: `${match.metadata.rounds_won} / ${match.metadata.rounds_lost}`,
         inline: true,
       },
+      {
+        name: `Session RR`,
+        value: `${player.sessionRR}`,
+        inline: true,
+      }
     ]);

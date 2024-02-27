@@ -63,6 +63,8 @@ export async function execute(
       tag: player.tag,
       playerId: player.puuid,
       channelIds: [interaction.channelId],
+      updatedAt: new Date(),
+      sessionRR: 0,
     });
   }
 

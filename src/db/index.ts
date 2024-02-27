@@ -63,6 +63,14 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: 'array',
           description: "'channelIds' is required and is an array",
         },
+        updatedAt: {
+          bsonType: 'date',
+          description: "'updatedAt' is required and is an array",
+        },
+        sessionRR: {
+          bsonType: 'number',
+          description: "'sessionRR' is required and is an array",
+        },
       },
     },
   };

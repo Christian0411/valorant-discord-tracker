@@ -7,4 +7,6 @@ export default interface TrackedPlayer {
   playerId: string;
   channelIds: Array<string>;
   id?: ObjectId;
+  updatedAt: Date;
+  sessionRR: number;
 }
