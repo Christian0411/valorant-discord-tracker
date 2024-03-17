@@ -4,7 +4,7 @@ import { ValorantAPI } from "../valorant";
 import config from '../../config.json'
 import { MatchNotification, MatchNotificationStats } from "../discord/embeds/MatchNotification/MatchNotification";
 import { TextChannel } from "discord.js";
-import { Color } from "../discord/markdown";
+import { Color, colorize } from "../discord/markdown";
 import TrackedPlayer from "../db/models/TrackedPlayer";
 import { Match } from "../valorant/types/match";
 import { Stat } from "../db/models/Stat";
@@ -112,14 +112,19 @@ function buildStats(player: TrackedPlayer, match: Match, mmr: MMR) {
         },
         hs: { stat: `${match.players.me.stats.headshot_percent}%`, color: determineStatColor(player.stats.hs, match.players.me.stats.headshot_percent!) },
         winrate: { stat: `${winrate}%`, color: winrate > 50 ? Color.Green : Color.Red },
-        placement: { stat: match.players.me.stats.placement! },
+        placement: { stat: match.players.me.stats.placement!, color: determinePlacementColor(match.players.me.stats.placement!) },
         score: { stat: `${match.metadata.rounds_won}/${match.metadata.rounds_lost}`, color: match.metadata.has_won ? Color.Green : Color.Red },
-        sessionRR: { stat: `${player.sessionRR} RR` }
+        sessionRR: { stat: `${player.sessionRR} RR`, color: player.sessionRR <= 0 ? Color.Red : Color.Green }
     }
 
     return stats
 }
+function determinePlacementColor(placement: number) {
+    if (placement <= 2) return Color.Green
+    if (placement >= 4) return Color.Red
+    return Color.None;
 
+}
 function determineStatColor({ average, best }: Stat, matchStat: number) {
     if (matchStat > best) return Color.Gold
     if (matchStat > average) return Color.Green
