@@ -65,11 +65,15 @@ async function applySchemaValidation(db: mongoDB.Db) {
         },
         updatedAt: {
           bsonType: 'date',
-          description: "'updatedAt' is required and is an array",
+          description: "'updatedAt' is required and is a date",
         },
         sessionRR: {
           bsonType: 'number',
-          description: "'sessionRR' is required and is an array",
+          description: "'sessionRR' is required and is a number",
+        },
+        stats: {
+          bsonType: 'object',
+          description: "'stats' is required and is an object",
         },
       },
     },

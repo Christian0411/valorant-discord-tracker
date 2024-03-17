@@ -1,7 +1,11 @@
 node_modules/
 tracked_players*.json
 config.json
+config-p*.json
+config-d*.json
 background.sh
+src/rankattachment/attachment.png
+src/rankattachment/image.png
 pid
 .env
 build/

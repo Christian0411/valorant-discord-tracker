@@ -1,19 +1,56 @@
-import {EmbedBuilder} from 'discord.js';
-import {Match} from '../../../valorant/types/match';
+import { EmbedBuilder } from 'discord.js';
+import { Match } from '../../../valorant/types/match';
 import TrackedPlayer from '../../../db/models/TrackedPlayer';
+import { Color, buildMarkdownTable, colorize as color, spacer } from '../../markdown';
+
+interface NotificationStat {
+  stat: string | number, 
+  color?: Color
+}
+
+export interface MatchNotificationStats {
+  kills: NotificationStat,
+  deaths: NotificationStat,
+  assists: NotificationStat,
+  kd: NotificationStat,
+  hs: NotificationStat,
+  winrate: NotificationStat,
+  placement: NotificationStat,
+  score: NotificationStat,
+  sessionRR: NotificationStat,
+}
+
+function colorize(stat: NotificationStat) {
+  return color(stat.stat, stat.color)
+}
 
 export const MatchNotification = ({
   player,
   match,
   attachment,
+  stats,
 }: {
   player: TrackedPlayer,
   match: Match;
   attachment: string;
-}) =>
-  new EmbedBuilder()
+  stats: MatchNotificationStats;
+}) => {
+
+  const trackerLink = `[View match in tracker.gg](https://tracker.gg/valorant/match/${match.metadata.matchid})`
+  const statsTable = buildMarkdownTable([
+    ["Kills", "Deaths", "Assists"],
+    [colorize(stats.kills), colorize(stats.deaths), colorize(stats.assists)],
+    spacer(3),
+    ["K/D", "HS", "Win%"],
+    [colorize(stats.kd), colorize(stats.hs), colorize(stats.winrate)],
+    spacer(3),
+    ["Placement", "Score", "Session"],
+    [colorize(stats.placement), colorize(stats.score), colorize(stats.sessionRR)]
+  ])
+
+  return new EmbedBuilder()
     .setDescription(
-      `[View match in tracker.gg](https://tracker.gg/valorant/match/${match.metadata.matchid})`
+      trackerLink + "\n" + statsTable
     )
     .setColor(match.metadata.has_won ? 0x90ee90 : 0xff0000)
     .setTimestamp(match.metadata.game_start * 1000)
@@ -25,55 +62,5 @@ export const MatchNotification = ({
       iconURL: `${match.players.me.assets.agent.small}`,
       name: `${match.players.me.name}#${match.players.me.tag}`,
     })
-    .setFooter({text: `${match.metadata.mode} | ${match.metadata.map}`})
-    .addFields([
-      {
-        name: 'Kills',
-        value: `${match.players.me.stats.kills}`,
-        inline: true,
-      },
-      {
-        name: 'Deaths',
-        value: `${match.players.me.stats.deaths}`,
-        inline: true,
-      },
-      {
-        name: 'Assists',
-        value: `${match.players.me.stats.assists}`,
-        inline: true,
-      },
-      {
-        name: 'K/D',
-        value: `${
-          Math.round(
-            (match.players.me.stats.kills / match.players.me.stats.deaths) * 100
-          ) / 100
-        }`,
-        inline: true,
-      },
-      {
-        name: 'HS%',
-        value: `${match.players.me.stats.headshot_percent}%`,
-        inline: true,
-      },
-      {
-        name: 'ADR',
-        value: `${match.players.me.stats.adr}`,
-        inline: true,
-      },
-      {
-        name: 'Team Placement',
-        value: `${match.players.me.stats.placement}`,
-        inline: true,
-      },
-      {
-        name: `Match Score (${match.metadata.has_won ? 'Win' : 'Loss'})`,
-        value: `${match.metadata.rounds_won} / ${match.metadata.rounds_lost}`,
-        inline: true,
-      },
-      {
-        name: `Session RR`,
-        value: `${player.sessionRR}`,
-        inline: true,
-      }
-    ]);
+    .setFooter({ text: `${match.metadata.mode} | ${match.metadata.map}` })
+  }
