@@ -6,6 +6,7 @@ import {
   GatewayIntentBits,
   CommandInteraction,
   InteractionResponse,
+  TextChannel,
 } from 'discord.js';
 import {discordToken, guildId} from '../../config.json';
 import {deployCommands} from './commands/deploy-commands';
@@ -38,7 +39,6 @@ export class DiscordBot {
         console.log(`Ready! Logged in as ${readyClient.user.tag}`);
         // Reload commands for test guild on startup
         await deployCommands({guildId});
-
         resolve(true);
       });
     });

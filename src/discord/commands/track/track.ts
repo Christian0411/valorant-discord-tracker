@@ -65,6 +65,18 @@ export async function execute(
       channelIds: [interaction.channelId],
       updatedAt: new Date(),
       sessionRR: 0,
+      stats: {
+        kd: {
+          average: 0,
+          best: 0,
+          count: 0
+        },
+        hs: {
+          average: 0,
+          best: 0,
+          count: 0
+        }
+      }
     });
   }
 
