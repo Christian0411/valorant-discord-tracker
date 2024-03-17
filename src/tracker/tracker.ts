@@ -100,7 +100,7 @@ function buildStats(player: TrackedPlayer, match: Match, mmr: MMR) {
     // current season is the penultimate in this list, may change for act 3?
     const currentSeason = seasons[seasons.length - 2];
 
-    const winrate = currentSeason.wins / currentSeason.number_of_games * 100;
+    const winrate = Math.round(currentSeason.wins / currentSeason.number_of_games * 100 * 100) / 100;
 
     const stats: MatchNotificationStats = {
         kills: { stat: match.players.me.stats.kills },
